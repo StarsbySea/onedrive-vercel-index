@@ -83,6 +83,13 @@ const DownloadButtonGroup = () => {
           btnTitle={t('Download the file directly through OneDrive')}
         />
         <DownloadButton
+          onClickCallback={() => window.open(`https://dl.ptufdc.com${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)}
+          btnColor="yellow"
+          btnText={t('Download')}
+          btnIcon="file-download"
+          btnTitle={t('Download the file through Cloudflare Worker')}
+        />
+        <DownloadButton
           onClickCallback={() => {
             clipboard.copy(`${getBaseUrl()}/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)
             toast.success(t('Copied direct link to clipboard.'))
