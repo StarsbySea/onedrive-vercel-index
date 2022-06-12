@@ -83,7 +83,7 @@ const DownloadButtonGroup = () => {
           btnTitle={t('Download the file directly through OneDrive')}
         />
         <DownloadButton
-          onClickCallback={() => window.open(`https://dl.ptufdc.com${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)}
+          onClickCallback={() => window.open(`https://cache.ptufdc.com${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)}
           btnColor="yellow"
           btnText={t('Download')}
           btnIcon="file-download"
