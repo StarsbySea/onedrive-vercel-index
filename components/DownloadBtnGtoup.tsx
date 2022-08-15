@@ -76,13 +76,6 @@ const DownloadButtonGroup = () => {
       <CustomEmbedLinkMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} path={asPath} />
       <div className="flex flex-wrap justify-center gap-2">
         <DownloadButton
-          onClickCallback={() => window.open(`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)}
-          btnColor="blue"
-          btnText={t('Download')}
-          btnIcon="file-download"
-          btnTitle={t('Download the file directly through OneDrive')}
-        />
-        <DownloadButton
           onClickCallback={() => window.open(`https://cache.ptufdc.com${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`)}
           btnColor="yellow"
           btnText={t('Download')}
