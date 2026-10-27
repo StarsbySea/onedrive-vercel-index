@@ -34,7 +34,7 @@ jobs:
         working-directory: cloudflare-openlist
         shell: bash
         run: |
-          npx -y wrangler@4 pages dev ./dist --d1 DB --port 8787 > /tmp/openlist-pages.log 2>&1 &
+          npx -y wrangler@4 pages dev ./dist --d1 DB --compatibility-date 2026-10-20 --compatibility-flags nodejs_compat --port 8787 > /tmp/openlist-pages.log 2>&1 &
           PID=$!
           trap 'kill "$PID" 2>/dev/null || true' EXIT
           STATUS=""
