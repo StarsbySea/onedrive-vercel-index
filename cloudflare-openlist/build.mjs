@@ -40,6 +40,17 @@ fs.writeFileSync(indexFile, html);
 const entry = `import app from "./src/backend/index";
 export default {
   async fetch(request, env, ctx) {
+    // Fail closed until both secrets are installed. Never expose a public setup wizard.
+    if (!env.JWT_SECRET || !env.ADMIN_PASS) {
+      return new Response("OpenList deployment is not initialized", {
+        status: 503,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Robots-Tag": "noindex"
+        }
+      });
+    }
     const actual = new URL(request.url);
     const p = actual.pathname;
     if (p === "/openlist") {
