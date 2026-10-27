@@ -1,0 +1,38 @@
+name: Verify OpenList Cloudflare build
+on:
+  push:
+    branches:
+      - cloudflare-openlist
+    paths:
+      - cloudflare-openlist/**
+      - .github/workflows/openlist-build.yml
+  workflow_dispatch:
+jobs:
+  verify-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Compile official OpenList Worker and frontend
+        working-directory: cloudflare-openlist
+        run: npm run build
+      - name: Verify advanced-mode entrypoint
+        shell: bash
+        run: |
+          test -s cloudflare-openlist/dist/_worker.js
+          test -s cloudflare-openlist/dist/index.html
+          grep -q '"/openlist"' cloudflare-openlist/dist/index.html
+          echo "OpenList /openlist build passed"
+      - name: Upload debug artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openlist-dist
+          path: cloudflare-openlist/dist/
+          retention-days: 1
