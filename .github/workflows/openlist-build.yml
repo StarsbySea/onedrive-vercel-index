@@ -30,6 +30,22 @@ jobs:
           test -s cloudflare-openlist/dist/index.html
           grep -q '"/openlist"' cloudflare-openlist/dist/index.html
           echo "OpenList /openlist build passed"
+      - name: Smoke-test fail-closed Pages Worker (no secrets)
+        working-directory: cloudflare-openlist
+        shell: bash
+        run: |
+          npx -y wrangler@4 pages dev ./dist --d1 DB --port 8787 > /tmp/openlist-pages.log 2>&1 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true' EXIT
+          STATUS=""
+          for i in $(seq 1 30); do
+            STATUS=$(curl -sS -o /tmp/openlist-response -w '%{http_code}' --max-time 2 http://127.0.0.1:8787/openlist/ || true)
+            if [ "$STATUS" = "503" ]; then break; fi
+            sleep 2
+          done
+          cat /tmp/openlist-pages.log
+          test "$STATUS" = "503"
+          grep -q "not initialized" /tmp/openlist-response
       - name: Upload debug artifact
         uses: actions/upload-artifact@v4
         with:
