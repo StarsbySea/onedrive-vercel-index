@@ -1,0 +1,10 @@
+{
+  "name": "ptufdc-openlist-pages",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "description": "Pinned upstream OpenList Cloudflare Worker adapted to /openlist/ using Pages advanced mode"
+}
